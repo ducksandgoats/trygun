@@ -71,6 +71,5 @@ export default function(config){
     // make sure localStorage / indexedDB is on
     const gun = Gun({ ...config.gun, localStorage: false, radisk: true, WebSocket: WebSocketProxy })
     setTimeout(() => {attachGun(gun)}, config.attach || 10000)
-
     return gun
 }
