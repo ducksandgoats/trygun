@@ -46,20 +46,23 @@ function GunProxy(opts) {
 
     function attachGun(gun){
         channel.on('data', gun._.opt.peers[urlProxy].wire.onmessage)
+        gun.shutdown = shutdown(gun)
     }
 
-    // function shutdown(gun){
-    //     channel.off('connect', connect)
-    //     channel.off('data', gun._.opt.peers[urlProxy].wire.onmessage)
-    //     channel.off('error', err)
-    //     channel.off('disconnect', disconnect)
-    //     var mesh = gun.back('opt.mesh'); // DAM
-    //     var peers = gun.back('opt.peers');
-    //     Object.keys(peers).forEach((id) => {mesh.bye(id)});
-    //     channel.quit()
-    // }
+    function shutdown(gun){
+        return function(){
+            channel.off('connect', connect)
+            channel.off('data', gun._.opt.peers[urlProxy].wire.onmessage)
+            channel.off('error', err)
+            channel.off('disconnect', disconnect)
+            var mesh = gun.back('opt.mesh'); // DAM
+            var peers = gun.back('opt.peers');
+            Object.keys(peers).forEach((id) => {mesh.bye(id)});
+            channel.quit()
+        }
+    }
 
-    return {WebSocketProxy, attachGun}
+    return {WebSocketProxy, attachGun, shutdown}
 };
 
 export default function(config){
