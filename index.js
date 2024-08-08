@@ -7,7 +7,6 @@ import 'gun/lib/rindexed'
 import Channel from 'trystereo'
 
 function GunProxy(opts) {
-    const debug = opts.debug
     let urlProxy
 
     const channel = new Channel(opts.url, opts.hash, opts.max, opts.min, opts.trystereo)
@@ -40,18 +39,15 @@ function GunProxy(opts) {
         websocketproxy.close = { code: '4', reason: 'Closed' };
         websocketproxy.onmessage = function () { }; //overwritten by gun
         websocketproxy.binaryType = 'blob';
-        websocketproxy.send = sendMessage;
+        websocketproxy.send = channel.onSend;
 
         return websocketproxy
     }
 
-    let gunMessage
-
     function attachGun(gun){
         setTimeout(() => {
             if(urlProxy){
-                gunMessage = gun._.opt.peers[urlProxy].wire.onmessage
-                channel.on('data', onMessage)
+                channel.on('data', gun._.opt.peers[urlProxy].wire.onmessage)
                 gun.shutdown = shutdown(gun)
             } else {
                 setTimeout(() => {attachGun(gun)}, 5000)
@@ -59,24 +55,10 @@ function GunProxy(opts) {
         }, 5000)
     }
 
-    function sendMessage(data){
-        if(debug){
-            console.log('Sending Data: ', typeof(data), data)
-        }
-        channel.onSend(data)
-    }
-
-    function onMessage(data){
-        if(debug){
-            console.log('Received Message: ', typeof(data), data)
-        }
-        gunMessage(data)
-    }
-
     function shutdown(gun){
         return function(){
             channel.off('connect', connect)
-            channel.off('data', onMessage)
+            channel.off('data', gun._.opt.peers[urlProxy].wire.onmessage)
             channel.off('error', err)
             channel.off('disconnect', disconnect)
             var mesh = gun.back('opt.mesh'); // DAM
