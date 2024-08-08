@@ -69,7 +69,7 @@ export default function(config){
     // const proxyWebSocket = WebSocketProxy(config)
     // pass websocket as custom websocket to gun instance
     // make sure localStorage / indexedDB is on
-    const gun = Gun({ ...config.gun, WebSocket: WebSocketProxy })
+    const gun = Gun({ ...config.gun, peers: ["proxy:websocket"], WebSocket: WebSocketProxy })
     setTimeout(() => {attachGun(gun)}, config.attach || 10000)
     return gun
 }
