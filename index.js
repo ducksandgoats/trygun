@@ -45,8 +45,14 @@ function GunProxy(opts) {
     }
 
     function attachGun(gun){
-        channel.on('data', gun._.opt.peers[urlProxy].wire.onmessage)
-        gun.shutdown = shutdown(gun)
+        setTimeout(() => {
+            if(urlProxy){
+                channel.on('data', gun._.opt.peers[urlProxy].wire.onmessage)
+                gun.shutdown = shutdown(gun)
+            } else {
+                setTimeout(() => {attachGun(gun)}, 5000)
+            }
+        }, 5000)
     }
 
     function shutdown(gun){
@@ -73,6 +79,6 @@ export default function(config){
     // pass websocket as custom websocket to gun instance
     // make sure localStorage / indexedDB is on
     const gun = Gun({ ...config.gun, peers: ["proxy:websocket"], WebSocket: WebSocketProxy })
-    setTimeout(() => {attachGun(gun)}, config.attach || 10000)
+    attachGun(gun)
     return gun
 }
