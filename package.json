@@ -1,6 +1,6 @@
 {
   "name": "trygun",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "",
   "type": "module",
   "main": "index.js",
@@ -12,6 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "gun": "github:amark/gun",
-    "trystereo": "^6.0.5"
+    "trystereo": "^6.0.6"
   }
 }
