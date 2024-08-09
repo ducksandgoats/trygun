@@ -7,7 +7,6 @@ import 'gun/lib/rindexed'
 import Channel from 'trystereo'
 
 function GunProxy(opts) {
-    const debug = opts.debug
     let urlProxy
 
     const channel = new Channel(opts.url, opts.hash, opts.max, opts.min, opts.trystereo)
