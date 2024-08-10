@@ -10,7 +10,7 @@ function GunProxy(opts) {
     const debug = opts.debug
     let urlProxy
 
-    const channel = new Channel(opts.url, opts.hash, opts.max, opts.min, opts.trystereo)
+    const channel = new Channel(opts.url, opts.hash, opts.trystereo)
 
     const connect = (chan) => {console.log('connected: ' + chan.id)}
     const err = (e) => {console.error(e)}
