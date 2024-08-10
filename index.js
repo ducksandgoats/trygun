@@ -86,6 +86,7 @@ function GunProxy(opts) {
             var mesh = gun.back('opt.mesh'); // DAM
             var peers = gun.back('opt.peers');
             Object.keys(peers).forEach((id) => {mesh.bye(id)});
+            gun.status = false
             channel.quit()
         }
     }
