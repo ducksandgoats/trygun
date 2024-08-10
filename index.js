@@ -50,6 +50,9 @@ function GunProxy(opts) {
     function attachGun(gun){
         setTimeout(() => {
             if(urlProxy){
+                if(debug){
+                    console.log('proxy', urlProxy)
+                }
                 gunMessage = gun._.opt.peers[urlProxy].wire.onmessage
                 channel.on('data', onMessage)
                 gun.shutdown = shutdown(gun)
