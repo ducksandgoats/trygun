@@ -12,6 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "gun": "github:amark/gun",
-    "trystereo": "^6.0.9"
+    "trystereo": "^7.0.0"
   }
 }
