@@ -13,7 +13,7 @@ function GunProxy(opts) {
     const channel = new Channel(opts.url, opts.hash, opts.trystereo)
 
     const connect = (chan) => {console.log('connected: ' + chan.id)}
-    const err = (e) => {console.error(e)}
+    const err = (e) => {console.error(e.id, e)}
     const disconnect = (chan) => {console.log('disconnected: ' + chan.id)}
     channel.on('connect', connect)
     channel.on('error', err)
